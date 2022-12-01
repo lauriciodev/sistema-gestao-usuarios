@@ -22,7 +22,12 @@ class UserController {
       return;
     }
 
-    await User.findEmail(email);
+    let emailExists = await User.findEmail(email);
+    if (emailExists) {
+      res.status(406);
+      res.json({ erro: "email já está sendo usado" });
+      return;
+    }
 
     await User.create(email, password, name);
     res.status(200);
