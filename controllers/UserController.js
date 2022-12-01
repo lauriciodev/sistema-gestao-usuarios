@@ -1,3 +1,6 @@
+const { validEmail } = require("../models/User");
+let User = require("../models/User");
+
 class UserController {
   async index(req, res) {}
 
@@ -6,17 +9,24 @@ class UserController {
     if (email == undefined) {
       res.status(400);
       res.json({ erro: "o email é inválido!" });
+      return;
     }
     if (name == undefined) {
       res.status(400);
       res.json({ erro: "o nome é inválido!" });
+      return;
     }
     if (password == undefined) {
       res.status(400);
       res.json({ erro: "o password  é inválido!" });
+      return;
     }
 
+    await User.findEmail(email);
+
+    await User.create(email, password, name);
     res.status(200);
+    res.json({ status: "usuario cadastrado" });
   }
 }
 
