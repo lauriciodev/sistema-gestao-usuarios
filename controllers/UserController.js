@@ -39,14 +39,30 @@ class UserController {
 
     let emailExists = await User.findEmail(email);
     if (emailExists) {
-      res.status(406);
       res.json({ erro: "email já está sendo usado" });
+      res.status(406);
       return;
     }
 
     await User.create(email, password, name);
     res.status(200);
     res.json({ status: "usuario cadastrado" });
+  }
+
+  async edit(req, res) {
+    let { id, name, role, email } = req.body;
+    let result = await User.update(id, email, name, role);
+    if (result != undefined) {
+      if (result.status) {
+        res.send("usuario atualizado");
+      } else {
+        res.status(406);
+        res.send(result.erro);
+      }
+    } else {
+      res.status(406);
+      res.send("erro no servidor");
+    }
   }
 }
 

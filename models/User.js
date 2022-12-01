@@ -51,7 +51,6 @@ class User {
   }
 
   //verificando existencia de email
-
   async findEmail(email) {
     try {
       let result = await knex.select("*").from("users").where({ email: email });
@@ -75,13 +74,15 @@ class User {
     if (user != undefined) {
       let editeUser = {};
 
-      //email foi passado
+      //email foi passado?
       if (email != undefined) {
         //email é diferente do email atual
         if (email != user.email) {
           let emailExists = await this.findEmail(email);
           if (emailExists == false) {
             editeUser.email = email;
+          } else {
+            return { status: false, erro: "email já existe !" };
           }
         }
       }
@@ -92,6 +93,14 @@ class User {
 
       if (role != undefined) {
         editeUser.role = role;
+      }
+
+      //enviando dados atualizados
+      try {
+        await knex.update(editeUser).where({ id: id }).table("users");
+        return { status: true };
+      } catch (erro) {
+        return { status: false, erro: erro };
       }
     } else {
       return { status: false, erro: "o usuario não existe !" };
