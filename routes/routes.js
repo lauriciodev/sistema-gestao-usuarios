@@ -6,5 +6,6 @@ var UserController = require("../controllers/UserController");
 
 router.get("/", HomeController.index);
 router.post("/user", UserController.create);
+router.get("/user", UserController.index);
 
 module.exports = router;

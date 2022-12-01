@@ -2,7 +2,10 @@ const { validEmail } = require("../models/User");
 let User = require("../models/User");
 
 class UserController {
-  async index(req, res) {}
+  async index(req, res) {
+    let users = await User.findAll();
+    res.json(users);
+  }
 
   async create(req, res) {
     let { email, name, password } = req.body;
