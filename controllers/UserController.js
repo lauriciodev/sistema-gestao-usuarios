@@ -10,12 +10,10 @@ class UserController {
   async findUserId(req, res) {
     let id = req.params.id;
     let users = await User.findById(id);
-    if (users != undefined) {
+    if (users == undefined) {
       res.status(404);
       res.json({});
     } else {
-      console.log(users);
-
       res.status(200);
       res.json(users);
     }
