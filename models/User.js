@@ -20,13 +20,12 @@ class User {
         .select(["id", "name", "email", "role"])
         .where({ id: id })
         .table("users");
-      return user;
 
-      /* if (user.id > 0) {
+      if (user.length > 0) {
         return user[0];
       } else {
         return undefined;
-      } */
+      }
     } catch (error) {
       console.log(error);
       return undefined;
