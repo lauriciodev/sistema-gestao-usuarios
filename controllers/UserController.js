@@ -7,6 +7,19 @@ class UserController {
     res.json(users);
   }
 
+  async findUserId(req, res) {
+    let id = req.params.id;
+    let users = await User.findById(id);
+
+    if (users == undefined) {
+      res.status(404);
+      res.json({});
+    } else {
+      res.status(200);
+      res.json(users);
+    }
+  }
+
   async create(req, res) {
     let { email, name, password } = req.body;
     if (email == undefined) {
