@@ -64,6 +64,17 @@ class UserController {
       res.send("erro no servidor");
     }
   }
+
+  async delete(req, res) {
+    let id = req.params.id;
+    try {
+      let result = await User.deleteUsers(id);
+      res.status(200);
+      res.json(result.status);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = new UserController();

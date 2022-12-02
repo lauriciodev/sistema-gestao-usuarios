@@ -11,7 +11,7 @@ class User {
         .table("users");
       return result;
     } catch (error) {
-      console.log(erro);
+      console.log(error);
       return [];
     }
   }
@@ -104,6 +104,16 @@ class User {
       }
     } else {
       return { status: false, erro: "o usuario não existe !" };
+    }
+  }
+
+  //deletando usuarios
+  async deleteUsers(id) {
+    try {
+      await knex.delete().where({ id: id }).table("users");
+      return { status: "usuario deletado com sucesso" };
+    } catch (erro) {
+      return { status: "erro ao deletar usuario" };
     }
   }
 }
