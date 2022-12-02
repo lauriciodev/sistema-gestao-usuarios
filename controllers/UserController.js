@@ -69,7 +69,6 @@ class UserController {
     let id = req.params.id;
     let result = await User.deleteUsers(id);
 
-    console.log(result);
     if (result.status) {
       res.status(200);
       res.send("usuario deletado com sucesso");
