@@ -67,12 +67,15 @@ class UserController {
 
   async delete(req, res) {
     let id = req.params.id;
-    try {
-      let result = await User.deleteUsers(id);
+    let result = await User.deleteUsers(id);
+
+    console.log(result);
+    if (result.status) {
       res.status(200);
-      res.json(result.status);
-    } catch (error) {
-      console.log(error);
+      res.send("usuario deletado com sucesso");
+    } else {
+      res.status(406);
+      res.send("usuario não existe");
     }
   }
 }

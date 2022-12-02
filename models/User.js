@@ -109,11 +109,16 @@ class User {
 
   //deletando usuarios
   async deleteUsers(id) {
-    try {
-      await knex.delete().where({ id: id }).table("users");
-      return { status: "usuario deletado com sucesso" };
-    } catch (erro) {
-      return { status: "erro ao deletar usuario" };
+    let idExists = await this.findById(id);
+    if (idExists != undefined) {
+      try {
+        await knex.delete().where({ id: id }).table("users");
+        return { status: true };
+      } catch (erro) {
+        return { status: false };
+      }
+    } else {
+      return { erro: false };
     }
   }
 }
