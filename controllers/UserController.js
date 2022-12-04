@@ -11,8 +11,15 @@ class UserController {
   async recoverPassword(req, res) {
     let email = req.body;
 
-    let response = await Token.getEmail(email);
-    res.send(response);
+    let response = await Token.create(email);
+
+    if (response.status) {
+      res.status(200);
+      res.send(response.token);
+    } else {
+      res.status(406);
+      res.json({ err: response.erro, response: response.status });
+    }
   }
 
   async findUserId(req, res) {
