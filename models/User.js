@@ -36,18 +36,19 @@ class User {
     }
   }
 
-  //bucar por email
+  //buscar por email
 
   async findByEmail(email) {
     try {
       let user = await knex
         .select(["id", "name", "email", "role"])
-        .where({ email: email })
+        .where({ email: email });
         .table("users");
 
       if (user.length > 0) {
         return user[0];
       } else {
+        console.log(user);
         return undefined;
       }
     } catch (error) {

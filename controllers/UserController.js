@@ -22,6 +22,12 @@ class UserController {
     }
   }
 
+  async showEmail(req, res) {
+    let email = req.body;
+    let dataResult = await Token.teste(email);
+    res.send(dataResult);
+  }
+
   async findUserId(req, res) {
     let id = req.params.id;
     let users = await User.findById(id);

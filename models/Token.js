@@ -3,6 +3,7 @@ const User = require("./User");
 
 class CreateToken {
   async create(email) {
+    //variavel que  que recebe dados se email estiver cadastrado
     let result = await User.findByEmail(email);
     if (result != undefined) {
       try {
@@ -23,6 +24,11 @@ class CreateToken {
     } else {
       return { status: false, erro: "o email passado não existe2 !" };
     }
+  }
+
+  async teste(email) {
+    let data = await User.findByEmail(email);
+    return data;
   }
 }
 
