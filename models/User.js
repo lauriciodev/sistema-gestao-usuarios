@@ -36,6 +36,26 @@ class User {
     }
   }
 
+  //bucar por email
+
+  async findByEmail(email) {
+    try {
+      let user = await knex
+        .select(["id", "name", "email", "role"])
+        .where({ email: email })
+        .table("users");
+
+      if (user.length > 0) {
+        return user[0];
+      } else {
+        return undefined;
+      }
+    } catch (error) {
+      console.log(error);
+      return undefined;
+    }
+  }
+
   //criando novo usuario
 
   async create(email, password, name) {

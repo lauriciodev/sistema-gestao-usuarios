@@ -1,10 +1,18 @@
 const { validEmail } = require("../models/User");
 let User = require("../models/User");
+let Token = require("../models/Token");
 
 class UserController {
   async index(req, res) {
     let users = await User.findAll();
     res.json(users);
+  }
+
+  async recoverPassword(req, res) {
+    let email = req.body;
+
+    let response = await Token.getEmail(email);
+    res.send(response);
   }
 
   async findUserId(req, res) {
