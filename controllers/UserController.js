@@ -8,20 +8,6 @@ class UserController {
     res.json(users);
   }
 
-  async recoverPassword(req, res) {
-    let email = req.body.email;
-
-    let response = await Token.create(email);
-
-    if (response.status) {
-      res.status(200);
-      res.send("" + response.token);
-    } else {
-      res.status(406);
-      res.send(response.erro);
-    }
-  }
-
   async findUserId(req, res) {
     let id = req.params.id;
     let users = await User.findById(id);
@@ -90,6 +76,20 @@ class UserController {
     } else {
       res.status(406);
       res.send("usuario não existe");
+    }
+  }
+
+  async recoverPassword(req, res) {
+    let email = req.body.email;
+
+    let response = await Token.create(email);
+
+    if (response.status) {
+      res.status(200);
+      res.send("" + response.token);
+    } else {
+      res.status(406);
+      res.send(response.erro);
     }
   }
 
