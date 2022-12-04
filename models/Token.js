@@ -7,7 +7,6 @@ class CreateToken {
     let result = await User.findByEmail(email);
     if (result != undefined) {
       try {
-        console.log("tentando criar");
         let token = Date.now();
         await knex
           .insert({
@@ -22,13 +21,30 @@ class CreateToken {
         return { status: false, erro: "o email passado não existe !" };
       }
     } else {
-      return { status: false, erro: "o email passado não existe2 !" };
+      return { status: false, erro: "o email passado não existe !" };
+    }
+  }
+  async validate(token) {
+    try {
+      let result = await knex.select().where({ token: token }).table("tokens");
+      console.log(result);
+      if (result.length > 0) {
+        let tk = result[0];
+        if (tk.used) {
+          return { status: false };
+        } else {
+          return { status: true, token: tk };
+        }
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
-  async teste(email) {
-    let data = await User.findByEmail(email);
-    return data;
+  async setUsed(token) {
+    await knex.update({ used: 1 }).where({ token: token }).table("tokens");
   }
 }
 

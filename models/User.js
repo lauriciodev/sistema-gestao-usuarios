@@ -1,5 +1,6 @@
 let knex = require("../database/connection");
 let bcrypt = require("bcrypt");
+const Token = require("./Token");
 
 class User {
   //buscando  todos os dados do usuario
@@ -26,6 +27,7 @@ class User {
         .table("users");
 
       if (user.length > 0) {
+        console.log(user);
         return user[0];
       } else {
         return undefined;
@@ -42,13 +44,13 @@ class User {
     try {
       let user = await knex
         .select(["id", "name", "email", "role"])
-        .where({ email: email });
-        .table("users");
+        .where({ email: email })
+        .table("users")
+        .first();
 
-      if (user.length > 0) {
-        return user[0];
+      if (user) {
+        return user;
       } else {
-        console.log(user);
         return undefined;
       }
     } catch (error) {
@@ -141,6 +143,12 @@ class User {
     } else {
       return { erro: false };
     }
+  }
+
+  async changePassword(newPassword, id, token) {
+    let hash = await bcrypt.hash(newPassword, 10);
+    await knex.update({ password: hash }).where({ id: id }).table("users");
+    await Token.setUsed(token);
   }
 }
 

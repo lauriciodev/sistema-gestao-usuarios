@@ -9,23 +9,17 @@ class UserController {
   }
 
   async recoverPassword(req, res) {
-    let email = req.body;
+    let email = req.body.email;
 
     let response = await Token.create(email);
 
     if (response.status) {
       res.status(200);
-      res.send(response.token);
+      res.send("" + response.token);
     } else {
       res.status(406);
-      res.json({ err: response.erro, response: response.status });
+      res.send(response.erro);
     }
-  }
-
-  async showEmail(req, res) {
-    let email = req.body;
-    let dataResult = await Token.teste(email);
-    res.send(dataResult);
   }
 
   async findUserId(req, res) {
@@ -96,6 +90,26 @@ class UserController {
     } else {
       res.status(406);
       res.send("usuario não existe");
+    }
+  }
+
+  async changePassword(req, res) {
+    let token = req.body.token;
+    let password = req.body.password;
+
+    let isToken = await Token.validate(token);
+
+    if (isToken.status) {
+      await User.changePassword(
+        password,
+        isToken.token.user_id,
+        isToken.token.token
+      );
+      res.status(200);
+      res.send("senha alterada");
+    } else {
+      res.status(406);
+      res.send("token inválido !");
     }
   }
 }
