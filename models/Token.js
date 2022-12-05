@@ -1,11 +1,33 @@
 const knex = require("../database/connection");
-const { findByEmail } = require("./User");
+//const User = require("./User");
 
 class CreateToken {
+  //buscar por email
+
+  async findByEmail(email) {
+    try {
+      let user = await knex
+        .select(["id", "name", "email", "role"])
+        .where({ email: email })
+        .table("users")
+        .first();
+
+      if (user) {
+        return user;
+      } else {
+        return undefined;
+      }
+    } catch (error) {
+      console.log(error);
+      return undefined;
+    }
+  }
+
   async create(email) {
     //variavel que  que recebe dados se email estiver cadastrado
 
-    let result = await findByEmail(email);
+    let result = await this.findByEmail(email);
+
     if (result != undefined) {
       try {
         let token = Date.now();
