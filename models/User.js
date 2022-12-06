@@ -81,6 +81,7 @@ class User {
         //email é diferente do email atual
         if (email != user.email) {
           let emailExists = await this.findEmail(email);
+          //email passado já está em uso?
           if (emailExists == false) {
             editeUser.email = email;
           } else {
