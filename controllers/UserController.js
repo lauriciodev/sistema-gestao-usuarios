@@ -1,6 +1,10 @@
 const { validEmail } = require("../models/User");
 let User = require("../models/User");
 let Token = require("../models/Token");
+let jwt = require("jsonwebtoken");
+
+//secret jsonwebtoken
+let secret = "lauricio";
 
 class UserController {
   async index(req, res) {
