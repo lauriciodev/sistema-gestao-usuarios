@@ -7,7 +7,7 @@ class CreateToken {
   async findByEmail(email) {
     try {
       let user = await knex
-        .select(["id", "name", "email", "role"])
+        .select(["id", "name", "password", "email", "role"])
         .where({ email: email })
         .table("users")
         .first();
